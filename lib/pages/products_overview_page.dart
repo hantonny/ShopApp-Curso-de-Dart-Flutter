@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shop/components/bagdee.dart';
 import 'package:shop/components/product_grid.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/models/cart.dart';
 // ignore: depend_on_referenced_packages
 
 enum FilterOptions {
@@ -22,12 +25,10 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Minha Loja',
-            style: TextStyle(
-              color: Colors.white,
-            ),
+        title: const Text(
+          'Minha Loja',
+          style: TextStyle(
+            color: Colors.white,
           ),
         ),
         actions: [
@@ -52,6 +53,16 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
                 }
               });
             },
+          ),
+          Consumer<Cart>(
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.shopping_cart),
+            ),
+            builder: (ctx, cart, child) => Badgee(
+              value: cart.itemsCount.toString(),
+              child: child!,
+            ),
           ),
         ],
       ),
