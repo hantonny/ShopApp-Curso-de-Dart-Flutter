@@ -3,6 +3,7 @@ import 'package:shop/components/bagdee.dart';
 import 'package:shop/components/product_grid.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/models/cart.dart';
+import 'package:shop/utils/app_routes.dart';
 // ignore: depend_on_referenced_packages
 
 enum FilterOptions {
@@ -56,7 +57,9 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           ),
           Consumer<Cart>(
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.CART);
+              },
               icon: const Icon(Icons.shopping_cart),
             ),
             builder: (ctx, cart, child) => Badgee(
