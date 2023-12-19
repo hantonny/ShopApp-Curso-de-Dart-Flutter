@@ -16,15 +16,17 @@ class OrderList with ChangeNotifier {
   }
 
   void addOrder(Cart cart) {
-    _items.insert(
-      0,
-      Order(
-        id: Random().nextDouble().toString(),
-        total: cart.totalAmount,
-        date: DateTime.now(),
-        products: cart.items.values.toList(),
-      ),
-    );
+    if (cart.totalAmount != 0) {
+      _items.insert(
+        0,
+        Order(
+          id: Random().nextDouble().toString(),
+          total: cart.totalAmount,
+          date: DateTime.now(),
+          products: cart.items.values.toList(),
+        ),
+      );
+    }
     notifyListeners();
   }
 }
