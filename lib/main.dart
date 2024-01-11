@@ -1,3 +1,4 @@
+// ignore_for_file: depend_on_referenced_packages
 import 'package:flutter/material.dart';
 import 'package:shop/models/cart.dart';
 import 'package:shop/models/order_list.dart';
@@ -11,7 +12,7 @@ import 'package:shop/pages/products_overview_page.dart';
 import 'package:shop/pages/products_page.dart';
 
 import 'package:shop/utils/app_routes.dart';
-// ignore: depend_on_referenced_packages
+
 import 'package:provider/provider.dart';
 
 void main() {
