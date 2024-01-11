@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/components/app_drawer.dart';
 import 'package:shop/components/bagdee.dart';
 import 'package:shop/components/product_grid.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:shop/models/cart.dart';
 import 'package:shop/utils/app_routes.dart';

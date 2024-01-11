@@ -15,16 +15,16 @@ class ProductsPage extends StatelessWidget {
     final ProductList products = Provider.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Gerenciar Produtos'),
+        title: const Text('Gerenciar Produtos'),
         actions: [
           IconButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.PRODUCT_FORM);
               },
-              icon: Icon(Icons.add))
+              icon: const Icon(Icons.add))
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: ListView.builder(
@@ -32,7 +32,7 @@ class ProductsPage extends StatelessWidget {
           itemBuilder: (ctx, i) => Column(
             children: [
               ProductItem(products.items[i]),
-              Divider(),
+              const Divider(),
             ],
           ),
         ),

@@ -1,4 +1,4 @@
-import 'dart:math';
+// ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
 import 'package:shop/models/product.dart';
@@ -21,12 +21,30 @@ class _ProductFormPageState extends State<ProductFormPage> {
   final _imageUrlControler = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  final _formData = Map<String, Object>();
+  final _formData = <String, Object>{};
 
   @override
   void initState() {
     super.initState();
     _imageUrlFocus.addListener(updateImage);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_formData.isEmpty) {
+      final arg = ModalRoute.of(context)?.settings.arguments;
+      if (arg != null) {
+        final product = arg as Product;
+        _formData['id'] = product.id;
+        _formData['name'] = product.name;
+        _formData['price'] = product.price;
+        _formData['description'] = product.description;
+        _formData['imageUrl'] = product.imageUrl;
+        _imageUrlControler.text = product.imageUrl;
+      }
+    }
   }
 
   @override
@@ -58,8 +76,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
       return;
     }
     _formKey.currentState?.save();
-    Provider.of<ProductList>(context, listen: false)
-        .addProductFromData(_formData);
+    Provider.of<ProductList>(context, listen: false).saveProduct(_formData);
     Navigator.of(context).pop();
   }
 
@@ -67,8 +84,10 @@ class _ProductFormPageState extends State<ProductFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Formulário de Produto'),
-        actions: [IconButton(onPressed: _submitForm, icon: Icon(Icons.save))],
+        title: const Text('Formulário de Produto'),
+        actions: [
+          IconButton(onPressed: _submitForm, icon: const Icon(Icons.save))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -77,7 +96,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
             child: ListView(
               children: [
                 TextFormField(
-                  decoration: InputDecoration(
+                  initialValue: _formData['name']?.toString(),
+                  decoration: const InputDecoration(
                     labelText: 'Nome',
                     labelStyle: TextStyle(color: Colors.black),
                   ),
@@ -98,13 +118,14 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(
+                  initialValue: _formData['price']?.toString(),
+                  decoration: const InputDecoration(
                     labelText: 'Preço',
                     labelStyle: TextStyle(color: Colors.black),
                   ),
                   textInputAction: TextInputAction.next,
                   focusNode: _priceFocus,
-                  keyboardType: TextInputType.numberWithOptions(
+                  keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
                   onFieldSubmitted: (_) {
@@ -124,7 +145,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(
+                  initialValue: _formData['description']?.toString(),
+                  decoration: const InputDecoration(
                     labelText: 'Descrição',
                     labelStyle: TextStyle(color: Colors.black),
                   ),
@@ -167,6 +189,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                           if (!isValidImageUrl(imageUrl)) {
                             return 'Informe uma Url válida!';
                           }
+                          return null;
                         },
                       ),
                     ),
@@ -187,8 +210,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       child: _imageUrlControler.text.isEmpty
                           ? const Text('Informe a Url')
                           : FittedBox(
-                              child: Image.network(_imageUrlControler.text),
                               fit: BoxFit.cover,
+                              child: Image.network(_imageUrlControler.text),
                             ),
                     )
                   ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/components/app_drawer.dart';
 import 'package:shop/components/order.dart';
 import 'package:shop/models/order_list.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
 class OrdersPage extends StatelessWidget {
