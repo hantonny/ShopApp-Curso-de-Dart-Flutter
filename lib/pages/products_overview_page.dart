@@ -1,12 +1,15 @@
+// ignore_for_file: unused_import, depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:shop/components/app_drawer.dart';
 import 'package:shop/components/bagdee.dart';
 import 'package:shop/components/product_grid.dart';
-// ignore: depend_on_referenced_packages
+
 import 'package:provider/provider.dart';
 import 'package:shop/models/cart.dart';
+import 'package:shop/models/product.dart';
+import 'package:shop/models/product_list.dart';
 import 'package:shop/utils/app_routes.dart';
-// ignore: depend_on_referenced_packages
 
 enum FilterOptions {
   // ignore: constant_identifier_names
@@ -24,6 +27,20 @@ class ProductsOverviewPage extends StatefulWidget {
 
 class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   bool _showFavoriteOnly = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    Provider.of<ProductList>(context, listen: false)
+        .loadProducts()
+        .then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +88,11 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           ),
         ],
       ),
-      body: ProductGrid(_showFavoriteOnly),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductGrid(_showFavoriteOnly),
       drawer: const AppDrawer(),
     );
   }
