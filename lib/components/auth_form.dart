@@ -1,4 +1,7 @@
+// ignore_for_file: depend_on_referenced_packages, constant_identifier_names, no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
+import 'package:shop/exceptions/auth_exceptions.dart';
 import 'package:shop/models/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +19,7 @@ class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   AuthMode _authMode = AuthMode.Login;
-  Map<String, String> _authData = {'email': '', 'password': ''};
+  final Map<String, String> _authData = {'email': '', 'password': ''};
 
   bool _isLogin() => _authMode == AuthMode.Login;
   bool _isSignup() => _authMode == AuthMode.Signup;
@@ -31,6 +34,21 @@ class _AuthFormState extends State<AuthForm> {
     });
   }
 
+  void _showErrorDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: const Text('Ocorreu um erro'),
+              content: Text(msg),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Fechar'),
+                )
+              ],
+            ));
+  }
+
   Future<void> _submit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (!isValid) {
@@ -42,19 +60,25 @@ class _AuthFormState extends State<AuthForm> {
     _formKey.currentState?.save();
     Auth auth = Provider.of(context, listen: false);
 
-    if (_isLogin()) {
-      //Login
-      await auth.login(
-        _authData['email']!,
-        _authData['password']!,
-      );
-    } else {
-      //Registrar
+    try {
+      if (_isLogin()) {
+        //Login
+        await auth.login(
+          _authData['email']!,
+          _authData['password']!,
+        );
+      } else {
+        //Registrar
 
-      await auth.signup(
-        _authData['email']!,
-        _authData['password']!,
-      );
+        await auth.signup(
+          _authData['email']!,
+          _authData['password']!,
+        );
+      }
+    } on AuthException catch (error) {
+      _showErrorDialog(error.toString());
+    } catch (error) {
+      _showErrorDialog('Ocorreu um erro inesperado!');
     }
 
     setState(() => _isLoading = false);
@@ -128,7 +152,7 @@ class _AuthFormState extends State<AuthForm> {
                 height: 20,
               ),
               if (_isLoading)
-                CircularProgressIndicator()
+                const CircularProgressIndicator()
               else
                 ElevatedButton(
                   onPressed: _submit,
@@ -139,7 +163,7 @@ class _AuthFormState extends State<AuthForm> {
                           horizontal: 30, vertical: 8)),
                   child: Text(_isLogin() ? "ENTRAR" : "REGISTRAR"),
                 ),
-              Spacer(),
+              const Spacer(),
               TextButton(
                 onPressed: _switchAuthMode,
                 child:

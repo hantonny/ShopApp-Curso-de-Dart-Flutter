@@ -48,7 +48,7 @@ class AuthPage extends StatelessWidget {
                           color: Theme.of(context).cardColor),
                     ),
                   ),
-                  AuthForm(),
+                  const AuthForm(),
                 ]),
           )
         ],
