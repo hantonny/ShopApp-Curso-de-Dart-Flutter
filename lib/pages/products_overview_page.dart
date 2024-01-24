@@ -48,7 +48,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         title: const Text(
           'Minha Loja',
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         actions: [
