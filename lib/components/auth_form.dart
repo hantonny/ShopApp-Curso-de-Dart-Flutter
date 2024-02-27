@@ -145,7 +145,7 @@ class _AuthFormState extends State<AuthForm>
         curve: Curves.linear,
         padding: const EdgeInsets.all(16),
         // height: _isLogin() ? 310 : 400,
-        height: _isLogin() ? 310 : 400,
+        height: _isLogin() ? 330 : 400,
         width: deviceSize.width * 0.75,
         child: Form(
           key: _formKey,
